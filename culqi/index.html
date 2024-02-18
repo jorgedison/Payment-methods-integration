@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Pago con Culqi</title>
+    <script src="https://checkout.culqi.com/js/v4"></script>
+    <script>
+        Culqi.publicKey = '*********************';
+
+        function configurarCulqi() {
+            Culqi.settings({
+                title: 'GreenCycle',
+                currency: 'PEN',
+                description: 'Producto Prueba',
+                amount: 5000
+            });
+
+            Culqi.options({
+              lang: 'auto',
+              installments: true,
+              modal: true,
+              container: "#culqi-container", // Opcional
+              paymentMethods: {
+                tarjeta: true,
+                yape: true,
+                billetera: true,
+                bancaMovil: true,
+                agente: true,
+                cuotealo: true,
+              },
+              style: {
+                logo: 'https://greencycle.tech/assets/img/logo.png',
+                bannerColor: '#0A2540', // Azul oscuro
+                buttonBackground: '#FABD60', // Amarillo
+                menuColor: '#EFC078', // Naranja claro
+                linksColor: '#F56FAD', // Rosado
+                buttonText: 'Realizar Pago', // Texto del botón
+                buttonTextColor: '#FFFFFF', // Blanco
+                priceColor: '#FFFFFF' // Blanco
+              }
+            });
+
+
+
+        }
+
+        function pagar() {
+            Culqi.open();
+        }
+
+        function culqi() {
+            if (Culqi.token) {
+                // En este punto ya se generó el token y puedes enviarlo al servidor
+                var token = Culqi.token.id;
+                // Aquí puedes usar AJAX para enviar el token a tu servidor y procesar el pago
+                console.log("Token: " + token);
+            } else {
+                // Hubo un error en la generación del token
+                console.log(Culqi.error);
+                alert(Culqi.error.user_message);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<button onclick="configurarCulqi(); pagar();">Pagar con Culqi</button>
+
+<script>
+    // Esta función se llama automáticamente cuando Culqi se carga y está listo para usarse.
+    Culqi.onLoad = function() {
+        // Aquí puedes personalizar aún más el comportamiento inicial si es necesario.
+    };
+</script>
+
+</body>
+</html>
